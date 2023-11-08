@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/data/remote/pokemon_list_services.dart';
 import 'package:pokedex/domain/repository/pokemon_list_repository.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_events.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_states.dart';
@@ -20,6 +21,12 @@ class PokemonListBloc extends Bloc<PokemonListEvents, PokemonListStates> {
       ExecuteRequestToGetListWithAllPokemon event,
       Emitter<PokemonListStates> emit) async {
     emit(state.copyWith(statesEnums: StatesEnums.loading));
-    await _pokemonListRepository.executeRequestToGetListWithAllPokemon();
+    PokemonListServiceResponse pokemonListServiceResponse =
+        await _pokemonListRepository.executeRequestToGetListWithAllPokemon();
+    if(pokemonListServiceResponse.error == null) {
+       emit(state.copyWith(pokemonEntityList: pokemonListServiceResponse.pokemonEntityList, statesEnums: StatesEnums.loaded));
+    } else {
+      ///TODO: Handle the error
+    }
   }
 }

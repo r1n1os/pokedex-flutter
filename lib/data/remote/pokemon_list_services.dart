@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/urls.dart';
 
@@ -9,7 +10,7 @@ class PokemonListService {
     Response response = await dio.get(Urls.getListOfAllPokemonUrl);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return PokemonListServiceResponse(data: response.data);
+      return PokemonListServiceResponse(pokemonEntityList: PokemonEntity.fromList(response.data['results']));
     } else {
       return PokemonListServiceResponse(error: response.statusMessage, statusCode: response.statusCode);
     }
@@ -17,9 +18,9 @@ class PokemonListService {
 }
 
 class PokemonListServiceResponse {
-  Map<String, dynamic>? data;
+  List<PokemonEntity>? pokemonEntityList;
   String? error;
   int? statusCode;
 
-  PokemonListServiceResponse({this.data, this.error, this.statusCode});
+  PokemonListServiceResponse({this.pokemonEntityList, this.error, this.statusCode});
 }
