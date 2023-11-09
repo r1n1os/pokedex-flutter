@@ -70,7 +70,13 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   Widget _pokemonCard(PokemonEntity pokemonEntity) {
     return Card(
-      child: Text(pokemonEntity.name ?? 'NA'),
+      child: Column(
+        children: [
+          Text(pokemonEntity.id.toString() ?? 'NA'),
+          Text(pokemonEntity.name ?? 'NA'),
+          Text(pokemonEntity.order.toString() ?? 'NA'),
+        ],
+      ),
     );
   }
 }
