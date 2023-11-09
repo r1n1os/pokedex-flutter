@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
@@ -25,6 +26,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       body: BlocProvider(
         create: (providerContext) => _pokemonListBloc,
         child: _buildView(),
@@ -72,9 +74,11 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     return Card(
       child: Column(
         children: [
-          Text(pokemonEntity.id.toString() ?? 'NA'),
-          Text(pokemonEntity.name ?? 'NA'),
-          Text(pokemonEntity.order.toString() ?? 'NA'),
+          CachedNetworkImage(
+            placeholder: (context, url) =>
+            const CircularProgressIndicator(),
+            imageUrl: pokemonEntity.photoUrl ?? '',
+          ),
         ],
       ),
     );

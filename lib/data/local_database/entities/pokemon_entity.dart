@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:drift/drift.dart';
 import 'package:pokedex/data/local_database/appDatabase.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 
 @UseRowClass(PokemonEntity)
 class PokemonTable extends Table {
- IntColumn get id => integer()();
+  IntColumn get id => integer()();
 
   TextColumn? get name => text().nullable()();
 
@@ -14,8 +12,10 @@ class PokemonTable extends Table {
 
   IntColumn? get order => integer().nullable()();
 
- @override
- Set<Column> get primaryKey => {id};
+  TextColumn? get photoUrl => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }
 
 class PokemonEntity {
@@ -23,16 +23,21 @@ class PokemonEntity {
   String? name;
   String? extraInfoUrl;
   int? order;
+  String? photoUrl;
 
-  PokemonEntity({this.id = 0, this.name, this.extraInfoUrl, this.order});
+  PokemonEntity(
+      {this.id = 0, this.name, this.extraInfoUrl, this.order, this.photoUrl});
 
   PokemonEntity.fromJson(Map<String, dynamic> json) {
-    if(json['id'] != null) {
+    if (json['id'] != null) {
       id = json['id'];
     }
     name = json['name'];
     extraInfoUrl = json['url'];
     order = json['order'];
+    if(json['sprites'] != null) {
+      photoUrl = json['sprites']['other']['official-artwork']['front_default'];
+    }
   }
 
   static List<PokemonEntity> fromList(List jsonArray) {
@@ -46,18 +51,15 @@ class PokemonEntity {
         id: Value(pokemonEntity.id),
         name: Value(pokemonEntity.name),
         extraInfoUrl: Value(pokemonEntity.extraInfoUrl),
-        order: Value(pokemonEntity.order)));
+        order: Value(pokemonEntity.order),
+        photoUrl: Value(pokemonEntity.photoUrl)));
   }
 
   static Future<void> addPokemonListToDatabase(
       List<PokemonEntity> pokemonEntityList) async {
     AppDatabase db = getIt.get<AppDatabase>();
     await Future.forEach(pokemonEntityList, (pokemonEntity) {
-      db.into(db.pokemonTable).insert(PokemonTableCompanion(
-          id: Value(pokemonEntity.id),
-          name: Value(pokemonEntity.name),
-          extraInfoUrl: Value(pokemonEntity.extraInfoUrl),
-          order: Value(pokemonEntity.order)));
+      addSinglePokemonToDatabase(pokemonEntity);
     });
   }
 

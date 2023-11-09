@@ -5,10 +5,11 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
+import 'package:pokedex/data/local_database/entities/pokemon_type_entity.dart';
 
 part 'appDatabase.g.dart';
 
-@DriftDatabase(tables: [PokemonTable])
+@DriftDatabase(tables: [PokemonTable, PokemonTypeTable])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
