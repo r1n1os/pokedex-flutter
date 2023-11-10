@@ -6,10 +6,19 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_type_entity.dart';
+import 'package:pokedex/data/local_database/entities/pokemon_with_pokemon_type_entity.dart';
+import 'package:pokedex/data/local_database/entities/pokemon_with_stats_entity.dart';
+import 'package:pokedex/data/local_database/entities/stats_entity.dart';
 
 part 'appDatabase.g.dart';
 
-@DriftDatabase(tables: [PokemonTable, PokemonTypeTable])
+@DriftDatabase(tables: [
+  PokemonTable,
+  PokemonTypeTable,
+  PokemonWithPokemonTypeTable,
+  StatsTable,
+  PokemonWithStatsTable
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

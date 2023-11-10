@@ -71,6 +71,8 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   }
 
   Widget _pokemonCard(PokemonEntity pokemonEntity) {
+    print('Stats: ${pokemonEntity.statsEntityList?.length}');
+    print('Type: ${pokemonEntity.pokemonTypeEntityList?.length}');
     return Card(
       child: Column(
         children: [
