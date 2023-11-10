@@ -24,7 +24,7 @@ class PokemonListDataModel {
               ? PokemonTypeUtils().getTypeColor(
                   pokemonEntity.pokemonTypeEntityList?.first.name ?? '')
               : null,
-          isFrontCardViewVisible: false));
+          isFrontCardViewVisible: true));
     });
 
     return pokemonListDataModelList;

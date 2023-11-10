@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/domain/data_model/pokemon_list_data_model.dart';
@@ -90,15 +91,40 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   }
 
   Widget _pokemonCard(PokemonListDataModel pokemonListDataModel) {
-    return Card(
-      color: pokemonListDataModel.cardBackgroundColor,
-      child: Column(
-        children: [
-          CachedNetworkImage(
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          pokemonListDataModel.isFrontCardViewVisible =
+              !pokemonListDataModel.isFrontCardViewVisible;
+        });
+      },
+      child: FlipCard(
+        fill: Fill.fillFront,
+        front: Card(
+          color: pokemonListDataModel.cardBackgroundColor,
+          child: Column(
+            children: [
+              CachedNetworkImage(
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
+              ),
+            ],
           ),
-        ],
+        ),
+        back: Card(
+          color: pokemonListDataModel.cardBackgroundColor,
+          child: Column(
+            children: [
+              Text(
+                pokemonListDataModel.pokemonEntity?.name ?? ''
+              ),
+              Text(
+                  pokemonListDataModel.pokemonEntity?.pokemonTypeEntityList?.map((e) => e.name).join("\n") ?? ''
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
