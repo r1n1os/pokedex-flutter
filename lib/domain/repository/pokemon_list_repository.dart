@@ -34,7 +34,7 @@ class PokemonListRepository {
       await _addSinglePokemonIntoLocalDatabase(
           pokemonListServiceResponse.pokemonEntity);
       pokemonListServiceResponse.pokemonEntityList =
-      await _queryAllPokemonFromLocalDatabase();
+      await queryAllPokemonFromLocalDatabase();
     }
     return pokemonListServiceResponse;
   }
@@ -51,7 +51,7 @@ class PokemonListRepository {
     await PokemonEntity.addPokemonListToDatabase(pokemonEntityList);
   }
 
-  Future<List<PokemonEntity>> _queryAllPokemonFromLocalDatabase() async {
+  Future<List<PokemonEntity>> queryAllPokemonFromLocalDatabase() async {
     return await PokemonEntity.getListOfAllPokemon();
   }
 }

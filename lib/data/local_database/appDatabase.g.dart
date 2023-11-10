@@ -193,7 +193,11 @@ class $PokemonTypeTableTable extends PokemonTypeTable
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -312,13 +316,19 @@ class $PokemonWithPokemonTypeTableTable extends PokemonWithPokemonTypeTable
   @override
   late final GeneratedColumn<int> pokemonId = GeneratedColumn<int>(
       'pokemon_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES pokemon_table (id)'));
   static const VerificationMeta _pokemonTypeIdMeta =
       const VerificationMeta('pokemonTypeId');
   @override
   late final GeneratedColumn<int> pokemonTypeId = GeneratedColumn<int>(
       'pokemon_type_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES pokemon_type_table (id)'));
   @override
   List<GeneratedColumn> get $columns => [id, pokemonId, pokemonTypeId];
   @override
@@ -359,8 +369,6 @@ class $PokemonWithPokemonTypeTableTable extends PokemonWithPokemonTypeTable
       {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return PokemonWithPokemonTypeEntity(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       pokemonId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}pokemon_id'])!,
       pokemonTypeId: attachedDatabase.typeMapping

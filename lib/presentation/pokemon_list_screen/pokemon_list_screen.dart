@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
+import 'package:pokedex/domain/data_model/pokemon_list_data_model.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_bloc.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_events.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_states.dart';
+import 'package:pokedex/utils/enums/states_enums.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 
 class PokemonListScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   @override
   void initState() {
+    _pokemonListBloc.add(QueryAllPokemonListFromLocalDatabase());
     _pokemonListBloc.add(ExecuteRequestToGetListWithAllPokemon());
     super.initState();
   }
@@ -48,7 +50,21 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     if (state.error != null) {
       return _buildErrorView(providerContext, state);
     }
-    return _buildPokemonList(providerContext, state.pokemonEntityList ?? []);
+    if (state.statesEnums == StatesEnums.loading) {
+      return Stack(
+        children: [
+          _buildPokemonList(
+              providerContext, state.pokemonListDataModelList ?? []),
+          Center(
+            child: const CircularProgressIndicator(
+              color: Colors.amberAccent,
+            ),
+          ),
+        ],
+      );
+    }
+    return _buildPokemonList(
+        providerContext, state.pokemonListDataModelList ?? []);
   }
 
   Widget _buildErrorView(
@@ -58,28 +74,29 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     );
   }
 
-  Widget _buildPokemonList(BuildContext providerContext, List<PokemonEntity> pokemonEntityList) {
+  Widget _buildPokemonList(BuildContext providerContext,
+      List<PokemonListDataModel> pokemonListDataModelList) {
     return GridView.builder(
-        itemCount: pokemonEntityList.length,
-        itemBuilder: (context, index) {
-      return _pokemonCard(pokemonEntityList[index]);
-    }, gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      mainAxisSpacing: 8.0,
-      crossAxisSpacing: 8.0,
-    ),);
+      itemCount: pokemonListDataModelList.length,
+      itemBuilder: (context, index) {
+        return _pokemonCard(pokemonListDataModelList[index]);
+      },
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+      ),
+    );
   }
 
-  Widget _pokemonCard(PokemonEntity pokemonEntity) {
-    print('Stats: ${pokemonEntity.statsEntityList?.length}');
-    print('Type: ${pokemonEntity.pokemonTypeEntityList?.length}');
+  Widget _pokemonCard(PokemonListDataModel pokemonListDataModel) {
     return Card(
+      color: pokemonListDataModel.cardBackgroundColor,
       child: Column(
         children: [
           CachedNetworkImage(
-            placeholder: (context, url) =>
-            const CircularProgressIndicator(),
-            imageUrl: pokemonEntity.photoUrl ?? '',
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
           ),
         ],
       ),

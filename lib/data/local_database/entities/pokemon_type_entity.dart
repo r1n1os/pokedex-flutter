@@ -5,12 +5,10 @@ import 'package:pokedex/utils/get_it_initialization.dart';
 
 @UseRowClass(PokemonTypeEntity)
 class PokemonTypeTable extends Table {
-  IntColumn get id => integer()();
+  IntColumn get id => integer().autoIncrement()();
 
   TextColumn? get name => text().nullable()();
 
-  @override
-  Set<Column> get primaryKey => {id};
 }
 
 class PokemonTypeEntity {
@@ -20,7 +18,6 @@ class PokemonTypeEntity {
   PokemonTypeEntity({this.id = 0, this.name});
 
   PokemonTypeEntity.fromJson(Map<String, dynamic> json) {
-    id = json['slot'];
     name = json['type']['name'];
   }
 
@@ -28,21 +25,22 @@ class PokemonTypeEntity {
     return jsonArray.map((e) => PokemonTypeEntity.fromJson(e)).toList();
   }
 
-  static Future<void> addPokemonTypeToDatabase(
+  static Future<int> addPokemonTypeToDatabase(
       PokemonTypeEntity pokemonTypeEntity) async {
     AppDatabase db = getIt.get<AppDatabase>();
-    await db.into(db.pokemonTypeTable).insertOnConflictUpdate(
+    return await db.into(db.pokemonTypeTable).insertOnConflictUpdate(
         PokemonTypeTableCompanion(
-            id: Value(pokemonTypeEntity.id),
             name: Value(pokemonTypeEntity.name)));
   }
 
   static Future<void> addListOfPokemonTypeToDatabase(
       List<PokemonTypeEntity> pokemonTypeEntityList, int pokemonId) async {
     await Future.forEach(pokemonTypeEntityList, (pokemonTypeEntity) async {
-      await PokemonWithPokemonTypeEntity.addPokemonWithPokemonTypeToDatabase(
-          pokemonId, pokemonTypeEntity.id);
-      await addPokemonTypeToDatabase(pokemonTypeEntity);
+      if(pokemonTypeEntity.name != 'normal') {
+        int pokemonTypeId = await addPokemonTypeToDatabase(pokemonTypeEntity);
+        await PokemonWithPokemonTypeEntity. addPokemonWithPokemonTypeToDatabase(
+            pokemonId, pokemonTypeId);
+      }
     });
   }
 
