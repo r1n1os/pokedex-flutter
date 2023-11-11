@@ -41,6 +41,6 @@ class PokemonWithPokemonTypeEntity {
     AppDatabase db = getIt.get<AppDatabase>();
     (db.delete(db.pokemonWithPokemonTypeTable)
           ..where((tbl) => tbl.pokemonId.equals(pokemonId)))
-        .go;
+        .go();
   }
 }

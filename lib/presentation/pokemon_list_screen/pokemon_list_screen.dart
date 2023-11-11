@@ -21,7 +21,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   @override
   void initState() {
-    _pokemonListBloc.add(QueryAllPokemonListFromLocalDatabase());
+    //_pokemonListBloc.add(QueryAllPokemonListFromLocalDatabase());
     _pokemonListBloc.add(ExecuteRequestToGetListWithAllPokemon());
     super.initState();
   }

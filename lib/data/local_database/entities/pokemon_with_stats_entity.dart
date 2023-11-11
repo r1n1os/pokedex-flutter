@@ -35,6 +35,6 @@ class PokemonWithStatsEntity {
 
   static Future<void> deletePokemonWithStatsBasedOnPokemonId(int pokemonId) async {
     AppDatabase db = getIt.get<AppDatabase>();
-    (db.delete(db.pokemonWithStatsTable)..where((tbl) => tbl.pokemonId.equals(pokemonId))).go;
+    (db.delete(db.pokemonWithStatsTable)..where((tbl) => tbl.pokemonId.equals(pokemonId))).go();
   }
 }

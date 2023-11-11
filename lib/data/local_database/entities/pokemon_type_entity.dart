@@ -35,6 +35,7 @@ class PokemonTypeEntity {
 
   static Future<void> addListOfPokemonTypeToDatabase(
       List<PokemonTypeEntity> pokemonTypeEntityList, int pokemonId) async {
+    AppDatabase db = getIt.get<AppDatabase>();
     await Future.forEach(pokemonTypeEntityList, (pokemonTypeEntity) async {
       if(pokemonTypeEntity.name != 'normal') {
         int pokemonTypeId = await addPokemonTypeToDatabase(pokemonTypeEntity);
@@ -50,5 +51,10 @@ class PokemonTypeEntity {
     return await (db.select(db.pokemonTypeTable)
           ..where((tbl) => tbl.id.equals(id)))
         .getSingleOrNull();
+  }
+
+  static Future<void> deletePokemonType() async {
+    AppDatabase db = getIt.get<AppDatabase>();
+    await (db.delete(db.pokemonTypeTable)).go();
   }
 }

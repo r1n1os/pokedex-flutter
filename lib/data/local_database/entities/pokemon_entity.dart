@@ -77,6 +77,7 @@ class PokemonEntity {
 
   static Future<void> addPokemonListToDatabase(
       List<PokemonEntity> pokemonEntityList) async {
+    await PokemonTypeEntity.deletePokemonType();
     await Future.forEach(pokemonEntityList, (pokemonEntity) async {
       await addSinglePokemonToDatabase(pokemonEntity);
     });
