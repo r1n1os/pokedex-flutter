@@ -7,14 +7,10 @@ class PokemonListRepository {
   getIt.get<PokemonListService>();
 
   Future<PokemonListServiceResponse>
-  executeRequestToGetListWithAllPokemon() async {
+  executeRequestToGetListWithAllPokemon(String? url) async {
     PokemonListServiceResponse pokemonListServiceResponse =
-    await _pokemonListService.executeRequestToGetAllPokemon();
+    await _pokemonListService.executeRequestToGetAllPokemon(url);
     if (pokemonListServiceResponse.error != null) {
-      print(
-          "Error: ${pokemonListServiceResponse
-              .error} with error code: ${pokemonListServiceResponse
-              .statusCode}");
     } else {
       //_addPokemonListIntoLocalDatabase(pokemonListServiceResponse.pokemonEntityList ?? []);
     }

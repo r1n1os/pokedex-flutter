@@ -4,10 +4,10 @@ import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/urls.dart';
 
 class PokemonListService {
-  Future<PokemonListServiceResponse> executeRequestToGetAllPokemon() async {
+  Future<PokemonListServiceResponse> executeRequestToGetAllPokemon(String? url) async {
     Dio dio = getIt<Dio>();
     Map<String, dynamic> headers = {};
-    Response response = await dio.get(Urls.getListOfAllPokemonUrl);
+    Response response = await dio.get(url ?? Urls.getListOfAllPokemonUrl);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return PokemonListServiceResponse(pokemonEntityList: PokemonEntity.fromList(response.data['results']), nextUrl: response.data['next']);

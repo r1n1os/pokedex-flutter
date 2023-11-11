@@ -21,6 +21,8 @@ class PokemonListBloc extends Bloc<PokemonListEvents, PokemonListStates> {
         _executeRequestToGetDetailsOfEachPokemon);
     on<QueryAllPokemonListFromLocalDatabase>(
         _queryAllPokemonListFromLocalDatabase);
+    on<ExecuteRequestToGetNextPokemonPageIfAvailable>(
+        _executeRequestToGetNextPokemonPageIfAvailable);
   }
 
   FutureOr<void> _executeRequestToGetListWithAllPokemon(
@@ -28,7 +30,7 @@ class PokemonListBloc extends Bloc<PokemonListEvents, PokemonListStates> {
       Emitter<PokemonListStates> emit) async {
     emit(state.copyWith(statesEnums: StatesEnums.loading));
     PokemonListServiceResponse pokemonListServiceResponse =
-        await _pokemonListRepository.executeRequestToGetListWithAllPokemon();
+        await _pokemonListRepository.executeRequestToGetListWithAllPokemon(event.url);
     if (pokemonListServiceResponse.error == null) {
       emit(state.copyWith(
           pokemonEntityList: pokemonListServiceResponse.pokemonEntityList,
@@ -69,5 +71,14 @@ class PokemonListBloc extends Bloc<PokemonListEvents, PokemonListStates> {
             await PokemonListDataModel.buildPokemonListDataModelList(
                 pokemonEntityList),
         statesEnums: StatesEnums.loaded));
+  }
+
+  FutureOr<void> _executeRequestToGetNextPokemonPageIfAvailable(
+      ExecuteRequestToGetNextPokemonPageIfAvailable event,
+      Emitter<PokemonListStates> emit) async {
+    print("Next URL: ${state.nextUrl}");
+    if(state.nextUrl != null) {
+      add(ExecuteRequestToGetListWithAllPokemon(url: state.nextUrl));
+    }
   }
 }

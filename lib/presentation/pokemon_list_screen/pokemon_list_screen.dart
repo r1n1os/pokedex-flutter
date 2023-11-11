@@ -80,6 +80,9 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     return GridView.builder(
       itemCount: pokemonListDataModelList.length,
       itemBuilder: (context, index) {
+        if(index == pokemonListDataModelList.length - 1){
+          _pokemonListBloc.add(ExecuteRequestToGetNextPokemonPageIfAvailable());
+        }
         return _pokemonCard(pokemonListDataModelList[index]);
       },
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
