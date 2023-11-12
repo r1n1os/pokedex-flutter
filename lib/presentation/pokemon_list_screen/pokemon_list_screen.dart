@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/custom_widgets/custom_loader.dart';
 import 'package:pokedex/domain/data_model/pokemon_list_data_model.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_bloc.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_events.dart';
@@ -56,11 +57,12 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         children: [
           _buildPokemonList(
               providerContext, state.pokemonListDataModelList ?? []),
-          Center(
+          /* Center(
             child: const CircularProgressIndicator(
               color: Colors.amberAccent,
             ),
-          ),
+          ),*/
+          const CustomLoader()
         ],
       );
     }
@@ -77,19 +79,28 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   Widget _buildPokemonList(BuildContext providerContext,
       List<PokemonListDataModel> pokemonListDataModelList) {
-    return GridView.builder(
-      itemCount: pokemonListDataModelList.length,
-      itemBuilder: (context, index) {
-        if(index == pokemonListDataModelList.length - 1){
-          _pokemonListBloc.add(ExecuteRequestToGetNextPokemonPageIfAvailable());
-        }
-        return _pokemonCard(pokemonListDataModelList[index]);
-      },
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8.0,
-        crossAxisSpacing: 8.0,
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            childCount: pokemonListDataModelList.length,
+            (context, index) {
+              if (index == pokemonListDataModelList.length - 1) {
+                _pokemonListBloc
+                    .add(ExecuteRequestToGetNextPokemonPageIfAvailable());
+              }
+              return _pokemonCard(pokemonListDataModelList[index]);
+            },
+          ),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2),
+        ),
+        const SliverToBoxAdapter(
+            child: CustomLoader(
+          loadingHeight: 50,
+          loadingWidth: 50,
+        ))
+      ],
     );
   }
 
@@ -119,12 +130,11 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
           color: pokemonListDataModel.cardBackgroundColor,
           child: Column(
             children: [
-              Text(
-                pokemonListDataModel.pokemonEntity?.name ?? ''
-              ),
-              Text(
-                  pokemonListDataModel.pokemonEntity?.pokemonTypeEntityList?.map((e) => e.name).join("\n") ?? ''
-              ),
+              Text(pokemonListDataModel.pokemonEntity?.name ?? ''),
+              Text(pokemonListDataModel.pokemonEntity?.pokemonTypeEntityList
+                      ?.map((e) => e.name)
+                      .join("\n") ??
+                  ''),
             ],
           ),
         ),
