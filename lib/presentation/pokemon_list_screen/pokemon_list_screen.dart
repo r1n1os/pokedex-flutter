@@ -94,9 +94,9 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         SliverToBoxAdapter(
             child: pokemonListDataModelList.isNotEmpty
                 ? const CustomLoader(
-                     loadingHeight: 50,
+                    loadingHeight: 50,
                     loadingWidth: 50,
-                    )
+                  )
                 : Container()),
       ],
     );
@@ -128,11 +128,26 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
           color: pokemonListDataModel.cardBackgroundColor,
           child: Column(
             children: [
-              Text(pokemonListDataModel.pokemonEntity?.name ?? ''),
-              Text(pokemonListDataModel.pokemonEntity?.pokemonTypeEntityList
-                      ?.map((e) => e.name)
-                      .join("\n") ??
-                  ''),
+              Text(
+                pokemonListDataModel.pokemonEntity?.name ?? '',
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.black),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                pokemonListDataModel.pokemonEntity?.pokemonTypeEntityList
+                        ?.map((e) => e.name)
+                        .join("\n") ??
+                    '',
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16,
+                    color: Colors.black),
+              ),
             ],
           ),
         ),
