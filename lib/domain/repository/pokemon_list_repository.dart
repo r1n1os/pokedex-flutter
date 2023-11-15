@@ -4,33 +4,24 @@ import 'package:pokedex/utils/get_it_initialization.dart';
 
 class PokemonListRepository {
   final PokemonListService _pokemonListService =
-  getIt.get<PokemonListService>();
+      getIt.get<PokemonListService>();
 
-  Future<PokemonListServiceResponse>
-  executeRequestToGetListWithAllPokemon(String? url) async {
+  Future<PokemonListServiceResponse> executeRequestToGetListWithAllPokemon(
+      String? url) async {
     PokemonListServiceResponse pokemonListServiceResponse =
-    await _pokemonListService.executeRequestToGetAllPokemon(url);
-    if (pokemonListServiceResponse.error != null) {
-    } else {
-      //_addPokemonListIntoLocalDatabase(pokemonListServiceResponse.pokemonEntityList ?? []);
-    }
+        await _pokemonListService.executeRequestToGetAllPokemon(url);
     return pokemonListServiceResponse;
   }
 
   Future<PokemonListServiceResponse> executeRequestToGetDetailsOfPokemon(
       String url) async {
     PokemonListServiceResponse pokemonListServiceResponse =
-    await _pokemonListService.executeRequestToGetDetailsOfPokemon(url);
-    if (pokemonListServiceResponse.error != null) {
-      print(
-          "Error: ${pokemonListServiceResponse
-              .error} with error code: ${pokemonListServiceResponse
-              .statusCode}");
-    } else {
-      await _addSinglePokemonIntoLocalDatabase(
+        await _pokemonListService.executeRequestToGetDetailsOfPokemon(url);
+    if (pokemonListServiceResponse.error == null) {
+      /*  await _addSinglePokemonIntoLocalDatabase(
           pokemonListServiceResponse.pokemonEntity);
       pokemonListServiceResponse.pokemonEntityList =
-      await queryAllPokemonFromLocalDatabase();
+      await queryAllPokemonFromLocalDatabase();*/
     }
     return pokemonListServiceResponse;
   }

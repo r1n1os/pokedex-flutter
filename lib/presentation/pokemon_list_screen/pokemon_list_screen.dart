@@ -55,19 +55,14 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     if (state.statesEnums == StatesEnums.loading) {
       return Stack(
         children: [
-          _buildPokemonList(
-              providerContext, state.pokemonListDataModelList ?? []),
-          /* Center(
-            child: const CircularProgressIndicator(
-              color: Colors.amberAccent,
-            ),
-          ),*/
+          _buildPokemonList(providerContext, state.nextUrl,
+              state.pokemonListDataModelList ?? []),
           const CustomLoader()
         ],
       );
     }
     return _buildPokemonList(
-        providerContext, state.pokemonListDataModelList ?? []);
+        providerContext, state.nextUrl, state.pokemonListDataModelList ?? []);
   }
 
   Widget _buildErrorView(
@@ -77,7 +72,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     );
   }
 
-  Widget _buildPokemonList(BuildContext providerContext,
+  Widget _buildPokemonList(BuildContext providerContext, String? nextUrl,
       List<PokemonListDataModel> pokemonListDataModelList) {
     return CustomScrollView(
       slivers: [
@@ -85,7 +80,8 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
           delegate: SliverChildBuilderDelegate(
             childCount: pokemonListDataModelList.length,
             (context, index) {
-              if (index == pokemonListDataModelList.length - 1) {
+              if (index == pokemonListDataModelList.length - 1 &&
+                  nextUrl != null) {
                 _pokemonListBloc
                     .add(ExecuteRequestToGetNextPokemonPageIfAvailable());
               }
@@ -95,11 +91,13 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2),
         ),
-        const SliverToBoxAdapter(
-            child: CustomLoader(
-          loadingHeight: 50,
-          loadingWidth: 50,
-        ))
+        SliverToBoxAdapter(
+            child: pokemonListDataModelList.isNotEmpty
+                ? const CustomLoader(
+                     loadingHeight: 50,
+                    loadingWidth: 50,
+                    )
+                : Container()),
       ],
     );
   }
