@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/custom_widgets/custom_loader.dart';
 import 'package:pokedex/domain/data_model/pokemon_list_data_model.dart';
+import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_screen.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_bloc.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_events.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_states.dart';
@@ -104,13 +105,19 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   Widget _pokemonCard(PokemonListDataModel pokemonListDataModel) {
     return GestureDetector(
-      onTap: () {
+      onLongPress: () {
         setState(() {
           pokemonListDataModel.isFrontCardViewVisible =
-              !pokemonListDataModel.isFrontCardViewVisible;
+          !pokemonListDataModel.isFrontCardViewVisible;
         });
       },
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder:(context) => PokemonDetailsScreen(pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,))
+        );
+      },
       child: FlipCard(
+        flipOnTouch: false,
         fill: Fill.fillFront,
         front: Card(
           color: pokemonListDataModel.cardBackgroundColor,

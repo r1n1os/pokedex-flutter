@@ -83,6 +83,33 @@ class PokemonEntity {
     });
   }
 
+  static Future<PokemonEntity?> queryPokemonEntityById(int pokemonId) async {
+    AppDatabase db = getIt.get<AppDatabase>();
+    List<PokemonTypeEntity> pokemonTypeEntityList = [];
+    PokemonEntity? pokemonEntity = await (db.select(db.pokemonTable)..where((tbl) => tbl.id.equals(pokemonId))).getSingleOrNull();
+    if(pokemonEntity != null) {
+      List<PokemonWithPokemonTypeEntity> pokemonWithPokemonTypeEntityList = await PokemonWithPokemonTypeEntity.getListOfPokemonWithPokemonTypeBasedOnPokemonId(pokemonEntity.id);
+      await Future.forEach(pokemonWithPokemonTypeEntityList, (pokemonWithPokemonTypeEntity) async {
+        PokemonTypeEntity? pokemonTypeEntity = await PokemonTypeEntity.getPokemonTypeEntityBasedOnId(pokemonWithPokemonTypeEntity.pokemonTypeId ?? -1);
+        if(pokemonTypeEntity != null) {
+          pokemonTypeEntityList.add(pokemonTypeEntity);
+        }
+      });
+      pokemonEntity.pokemonTypeEntityList = pokemonTypeEntityList;
+      List<PokemonWithStatsEntity> pokemonWithStatsEntityList = await PokemonWithStatsEntity.getListOfPokemonWithStatsBasedOnPokemonId(pokemonEntity.id);
+      List<StatsEntity> tempStatsEntityList = [];
+      await Future.forEach(pokemonWithStatsEntityList, (pokemonWithStatsEntity) async {
+        StatsEntity? statsEntity = await StatsEntity.getStatBasedOnName(pokemonWithStatsEntity.statName ?? '');
+        if(statsEntity != null) {
+          tempStatsEntityList.add(statsEntity);
+        }
+      });
+      pokemonEntity.statsEntityList = tempStatsEntityList;
+    }
+
+    return pokemonEntity;
+  }
+
   static Future<List<PokemonEntity>> getListOfAllPokemon() async {
     AppDatabase db = getIt.get<AppDatabase>();
     List<PokemonEntity> pokemonEntityList = await db.select(db.pokemonTable).get();
