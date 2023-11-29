@@ -97,21 +97,21 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
     );
   }
 
+  double value = 0.01;
   Widget _buildStatuses(PokemonEntity? pokemonEntity) {
-   return LinearProgressIndicator(
-      backgroundColor: Colors.orangeAccent,
-      valueColor: AlwaysStoppedAnimation(Colors.blue),
-      minHeight: 25,
-    );
-    /* return TweenAnimationBuilder<double>(
-      duration: const Duration(seconds: 15),
+   return TweenAnimationBuilder<double>(
+      duration: const Duration(seconds: 5),
       curve: Curves.easeInOut,
-      tween: Tween<double>(begin: 0, end: 100),
+      tween: Tween<double>(begin: 0.0, end: value),
+      onEnd: () {
+        setState(() {
+          value = 0.5;
+        });
+      },
       builder: (BuildContext context, double value, Widget? child) {
         return LinearProgressIndicator(
-
-          value: 50, backgroundColor: Colors.black, color: Colors.pink,);
+          value:value,);
       },
-    );*/
+    );
   }
 }

@@ -459,9 +459,9 @@ class $StatsTableTable extends StatsTable
   static const VerificationMeta _baseStatMeta =
       const VerificationMeta('baseStat');
   @override
-  late final GeneratedColumn<String> baseStat = GeneratedColumn<String>(
+  late final GeneratedColumn<int> baseStat = GeneratedColumn<int>(
       'base_stat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [name, baseStat];
   @override
@@ -494,7 +494,7 @@ class $StatsTableTable extends StatsTable
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name']),
       baseStat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}base_stat']),
+          .read(DriftSqlType.int, data['${effectivePrefix}base_stat']),
     );
   }
 
@@ -506,7 +506,7 @@ class $StatsTableTable extends StatsTable
 
 class StatsTableCompanion extends UpdateCompanion<StatsEntity> {
   final Value<String?> name;
-  final Value<String?> baseStat;
+  final Value<int?> baseStat;
   final Value<int> rowid;
   const StatsTableCompanion({
     this.name = const Value.absent(),
@@ -520,7 +520,7 @@ class StatsTableCompanion extends UpdateCompanion<StatsEntity> {
   });
   static Insertable<StatsEntity> custom({
     Expression<String>? name,
-    Expression<String>? baseStat,
+    Expression<int>? baseStat,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -531,7 +531,7 @@ class StatsTableCompanion extends UpdateCompanion<StatsEntity> {
   }
 
   StatsTableCompanion copyWith(
-      {Value<String?>? name, Value<String?>? baseStat, Value<int>? rowid}) {
+      {Value<String?>? name, Value<int?>? baseStat, Value<int>? rowid}) {
     return StatsTableCompanion(
       name: name ?? this.name,
       baseStat: baseStat ?? this.baseStat,
@@ -546,7 +546,7 @@ class StatsTableCompanion extends UpdateCompanion<StatsEntity> {
       map['name'] = Variable<String>(name.value);
     }
     if (baseStat.present) {
-      map['base_stat'] = Variable<String>(baseStat.value);
+      map['base_stat'] = Variable<int>(baseStat.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);

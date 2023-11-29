@@ -18,9 +18,9 @@ class PokemonListRepository {
     PokemonListServiceResponse pokemonListServiceResponse =
         await _pokemonListService.executeRequestToGetDetailsOfPokemon(url);
     if (pokemonListServiceResponse.error == null) {
-      /*  await _addSinglePokemonIntoLocalDatabase(
+        await _addSinglePokemonIntoLocalDatabase(
           pokemonListServiceResponse.pokemonEntity);
-      pokemonListServiceResponse.pokemonEntityList =
+     /* pokemonListServiceResponse.pokemonEntityList =
       await queryAllPokemonFromLocalDatabase();*/
     }
     return pokemonListServiceResponse;

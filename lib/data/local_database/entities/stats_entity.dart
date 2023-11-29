@@ -7,7 +7,7 @@ import 'package:pokedex/utils/get_it_initialization.dart';
 class StatsTable extends Table {
   TextColumn get name => text().nullable()();
 
-  TextColumn get baseStat => text().nullable()();
+  IntColumn get baseStat => integer().nullable()();
 
   ///The reason of using text as primary key is because api does not offer id
   ///And I wanted to avoid use autoincrement.
@@ -17,7 +17,7 @@ class StatsTable extends Table {
 
 class StatsEntity {
   String? name = '';
-  String? baseStat;
+  int? baseStat;
 
   StatsEntity({this.name = '', this.baseStat});
 

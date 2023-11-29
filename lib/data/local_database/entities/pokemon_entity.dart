@@ -45,7 +45,7 @@ class PokemonEntity {
       photoUrl = json['sprites']['other']['official-artwork']['front_default'];
     }
     if(json['stats'] != null) {
-      statsEntityList = StatsEntity.fromList(json['types']);
+      statsEntityList = StatsEntity.fromList(json['stats']);
     }
     if(json['types'] != null) {
       pokemonTypeEntityList = PokemonTypeEntity.fromList(json['types']);
