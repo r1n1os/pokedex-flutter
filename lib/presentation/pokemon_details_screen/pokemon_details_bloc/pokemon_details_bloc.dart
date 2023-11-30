@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
+import 'package:pokedex/domain/data_model/pokemon_details_data_model.dart';
 import 'package:pokedex/domain/repository/pokemon_details_repository.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_events.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_states.dart';
@@ -25,9 +26,11 @@ class PokemonDetailsBloc
         statesEnums: StatesEnums.loading
     ));
     PokemonEntity? pokemonEntity = await _pokemonDetailsRepository.executeLocalQueryToGetPokemonDetailsById(event.pokemonId);
+    List<PokemonDetailsDataModel> pokemonDetailsDataModelList = await PokemonDetailsDataModel.buildPokemonDetailsDataModel(pokemonEntity);
     if(pokemonEntity != null) {
       emit(state.copyWith(
         pokemonEntity: pokemonEntity,
+        pokemonDetailsDataModelList: pokemonDetailsDataModelList,
         statesEnums: StatesEnums.loaded
       ));
     }
