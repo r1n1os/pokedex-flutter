@@ -31,7 +31,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black12,
+      backgroundColor: Colors.blueGrey,
       body: BlocProvider(
         create: (providerContext) => _pokemonListBloc,
         child: _buildView(),

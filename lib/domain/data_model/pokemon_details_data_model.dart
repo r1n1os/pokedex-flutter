@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
-import 'package:pokedex/data/local_database/entities/pokemon_type_entity.dart';
 import 'package:pokedex/data/local_database/entities/stats_entity.dart';
-import 'package:pokedex/utils/pokemon_type_utils.dart';
+import 'package:pokedex/utils/color_utils.dart';
 
 class PokemonDetailsDataModel {
   PokemonEntity? pokemonEntity;
-  PokemonTypeEntity? pokemonTypeEntity;
   StatsEntity? statsEntity;
   Color? backgroundColor;
+  double? pokemonStatsValue;
+  Color? pokemonStatsColor;
   PokemonDetailsViewType? pokemonDetailsViewType;
 
   PokemonDetailsDataModel(
-      {this.pokemonEntity, this.pokemonTypeEntity, this.statsEntity, this.backgroundColor, this.pokemonDetailsViewType});
+      {this.pokemonEntity, this.statsEntity, this.backgroundColor, this.pokemonStatsValue, this.pokemonStatsColor, this.pokemonDetailsViewType});
 
   static Future<List<PokemonDetailsDataModel>> buildPokemonDetailsDataModel(
       PokemonEntity? pokemonEntity) async {
@@ -21,14 +21,13 @@ class PokemonDetailsDataModel {
     if(pokemonEntity != null) {
       pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
         pokemonEntity: pokemonEntity,
-        backgroundColor: PokemonTypeUtils().getTypeColor(
+        backgroundColor: ColorUtils().getTypeColor(
             pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
         pokemonDetailsViewType: PokemonDetailsViewType.pokemonImage));
       await Future.forEach(pokemonEntity.pokemonTypeEntityList ?? [], (pokemonTypeEntity) {
         pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
             pokemonEntity: pokemonEntity,
-            pokemonTypeEntity: pokemonTypeEntity,
-            backgroundColor: PokemonTypeUtils().getTypeColor(
+            backgroundColor: ColorUtils().getTypeColor(
                 pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
             pokemonDetailsViewType: PokemonDetailsViewType.pokemonTypes
         ));
@@ -38,7 +37,10 @@ class PokemonDetailsDataModel {
         pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
             pokemonEntity: pokemonEntity,
             statsEntity: statsEntity,
-            backgroundColor: PokemonTypeUtils().getTypeColor(
+            backgroundColor: ColorUtils().getTypeColor(
+                pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
+            pokemonStatsValue:  statsEntity?.baseStat?.toDouble() ?? 0.0 / 100,
+            pokemonStatsColor: ColorUtils().getTypeColor(
                 pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
             pokemonDetailsViewType: PokemonDetailsViewType.pokemonStats
         ));

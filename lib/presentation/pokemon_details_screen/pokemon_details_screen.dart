@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/custom_widgets/custom_loader.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
+import 'package:pokedex/data/local_database/entities/pokemon_type_entity.dart';
 import 'package:pokedex/domain/data_model/pokemon_details_data_model.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_bloc.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_events.dart';
@@ -41,6 +42,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       body: BlocProvider(
         create: (providerContext) => _pokemonDetailsBloc,
         child: _buildView(),
@@ -87,19 +89,6 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
           return _buildViewSectionsPerViewState(
               pokemonDetailsDataModeList[index]);
         });
-
-/*      Container(
-      color: CustomColors.steel,
-      child: Column(
-        children: [
-
-          Text('Pokemon Type(s)'),
-
-          SizedBox(height: 15),
-          _buildStatuses(pokemonEntity)
-        ],
-      ),
-    );*/
   }
 
   Widget _buildViewSectionsPerViewState(
@@ -126,54 +115,70 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   Widget _buildPokemonImageView(
       PokemonDetailsDataModel pokemonDetailsDataModel) {
-    return CachedNetworkImage(
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      imageUrl: pokemonDetailsDataModel.pokemonEntity?.photoUrl ?? '',
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: CachedNetworkImage(
+        width: 150,
+        height: 150,
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        imageUrl: pokemonDetailsDataModel.pokemonEntity?.photoUrl ?? '',
+      ),
     );
   }
 
   Widget _buildPokemonTypesView(
       PokemonDetailsDataModel pokemonDetailsDataModel) {
     return Container(
-      decoration: BoxDecoration(
-          color: pokemonDetailsDataModel.backgroundColor,
-          borderRadius: BorderRadius.circular(20)),
-      child: Text(pokemonDetailsDataModel.pokemonTypeEntity?.name ?? ''),
+      padding: const EdgeInsets.only(left: 21),
+      height: 30,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: pokemonDetailsDataModel
+                  .pokemonEntity?.pokemonTypeEntityList?.length ??
+              0,
+          itemBuilder: (context, index) {
+            PokemonTypeEntity? pokemonTypeEntity = pokemonDetailsDataModel
+                .pokemonEntity?.pokemonTypeEntityList?[index];
+            return Container(
+                width: 50,
+                decoration: BoxDecoration(
+                    color: pokemonDetailsDataModel.backgroundColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                    child: Text(pokemonTypeEntity?.name?.toUpperCase() ?? '')));
+          }),
     );
   }
 
-  double value = 0.01;
-
   Widget _buildPokemonStatsView(
       PokemonDetailsDataModel pokemonDetailsDataModel) {
-    return Row(
-      children: [
-        Text(pokemonDetailsDataModel.statsEntity?.name ?? ''),
-        TweenAnimationBuilder<double>(
-          duration: const Duration(seconds: 12),
-          curve: Curves.easeInOut,
-          tween: Tween<double>(begin: 0, end: value),
-          builder: (BuildContext context, double value, Widget? child) {
-            return child ?? Container();
-          },
-          onEnd: () {
-            setState(() {
-              value =
-                  pokemonDetailsDataModel.statsEntity?.baseStat?.toDouble() ?? 0.0 / 100;
-            });
-          },
-          child: Container(
-            width: 200,
-            height: 20,
-            decoration: BoxDecoration(
-                color: pokemonDetailsDataModel.backgroundColor,
-                borderRadius: BorderRadius.circular(50)),
-            child: LinearProgressIndicator(
-              value: value,
+    return Padding(
+        padding: const EdgeInsets.only(left: 21, top: 15),
+        child: Row(
+          children: [
+            SizedBox(
+                width: 100,
+                child: Text(pokemonDetailsDataModel.statsEntity?.name ?? '')),
+            Stack(
+              children: [
+                Container(
+                  width: 100,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: pokemonDetailsDataModel.pokemonStatsColor
+                          ?.withOpacity(0.2)),
+                ),
+                AnimatedContainer(
+                    duration: const Duration(milliseconds: 2000),
+                    width: pokemonDetailsDataModel.pokemonStatsValue,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: pokemonDetailsDataModel.pokemonStatsColor)),
+              ],
             ),
-          ),
-        ),
-      ],
-    );
+          ],
+        ));
   }
 }

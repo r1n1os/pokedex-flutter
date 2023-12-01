@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
-import 'package:pokedex/utils/pokemon_type_utils.dart';
+import 'package:pokedex/utils/color_utils.dart';
 
 class PokemonListDataModel {
   PokemonEntity? pokemonEntity;
@@ -21,7 +21,7 @@ class PokemonListDataModel {
           pokemonEntity: pokemonEntity,
           cardBackgroundColor: pokemonEntity.pokemonTypeEntityList != null &&
                   pokemonEntity.pokemonTypeEntityList?.isNotEmpty == true
-              ? PokemonTypeUtils().getTypeColor(
+              ? ColorUtils().getTypeColor(
                   pokemonEntity.pokemonTypeEntityList?.first.name ?? '')
               : null,
           isFrontCardViewVisible: true));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/utils/custom_colors.dart';
 
-class PokemonTypeUtils {
+class ColorUtils {
   Color getTypeColor(String type) {
     switch (type) {
       case 'fighting': return CustomColors.fighting;
