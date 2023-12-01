@@ -10,6 +10,7 @@ import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_states.dart';
 import 'package:pokedex/utils/enums/states_enums.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
+import 'package:pokedex/utils/images.dart';
 
 class PokemonDetailsScreen extends StatefulWidget {
   final int? pokemonId;
@@ -76,8 +77,11 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   Widget _buildErrorView(
       BuildContext providerContext, PokemonDetailsStates state) {
-    return const Column(
-      children: [Text('Sorry pokemon escaped!')],
+    return Column(
+      children: [
+        Image.asset(Images.emptyPokeballIcon),
+        const Text('Sorry pokemon escaped!')
+      ],
     );
   }
 
@@ -140,7 +144,8 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
             PokemonTypeEntity? pokemonTypeEntity = pokemonDetailsDataModel
                 .pokemonEntity?.pokemonTypeEntityList?[index];
             return Container(
-                width: 50,
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                margin: const EdgeInsets.only(left: 5),
                 decoration: BoxDecoration(
                     color: pokemonDetailsDataModel.backgroundColor,
                     borderRadius: BorderRadius.circular(20)),

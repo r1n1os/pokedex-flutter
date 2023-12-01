@@ -12,26 +12,29 @@ class PokemonDetailsDataModel {
   PokemonDetailsViewType? pokemonDetailsViewType;
 
   PokemonDetailsDataModel(
-      {this.pokemonEntity, this.statsEntity, this.backgroundColor, this.pokemonStatsValue, this.pokemonStatsColor, this.pokemonDetailsViewType});
+      {this.pokemonEntity,
+      this.statsEntity,
+      this.backgroundColor,
+      this.pokemonStatsValue,
+      this.pokemonStatsColor,
+      this.pokemonDetailsViewType});
 
   static Future<List<PokemonDetailsDataModel>> buildPokemonDetailsDataModel(
       PokemonEntity? pokemonEntity) async {
     List<PokemonDetailsDataModel> pokemonDetailsDataModelList = [];
 
-    if(pokemonEntity != null) {
+    if (pokemonEntity != null) {
       pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
-        pokemonEntity: pokemonEntity,
-        backgroundColor: ColorUtils().getTypeColor(
-            pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
-        pokemonDetailsViewType: PokemonDetailsViewType.pokemonImage));
-      await Future.forEach(pokemonEntity.pokemonTypeEntityList ?? [], (pokemonTypeEntity) {
-        pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
-            pokemonEntity: pokemonEntity,
-            backgroundColor: ColorUtils().getTypeColor(
-                pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
-            pokemonDetailsViewType: PokemonDetailsViewType.pokemonTypes
-        ));
-      });
+          pokemonEntity: pokemonEntity,
+          backgroundColor: ColorUtils().getTypeColor(
+              pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
+          pokemonDetailsViewType: PokemonDetailsViewType.pokemonImage));
+
+      pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
+          pokemonEntity: pokemonEntity,
+          backgroundColor: ColorUtils().getTypeColor(
+              pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
+          pokemonDetailsViewType: PokemonDetailsViewType.pokemonTypes));
 
       await Future.forEach(pokemonEntity.statsEntityList ?? [], (statsEntity) {
         pokemonDetailsDataModelList.add(PokemonDetailsDataModel(
@@ -39,11 +42,10 @@ class PokemonDetailsDataModel {
             statsEntity: statsEntity,
             backgroundColor: ColorUtils().getTypeColor(
                 pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
-            pokemonStatsValue:  statsEntity?.baseStat?.toDouble() ?? 0.0 / 100,
+            pokemonStatsValue: statsEntity?.baseStat?.toDouble() ?? 0.0 / 100,
             pokemonStatsColor: ColorUtils().getTypeColor(
                 pokemonEntity.pokemonTypeEntityList?.first.name ?? ''),
-            pokemonDetailsViewType: PokemonDetailsViewType.pokemonStats
-        ));
+            pokemonDetailsViewType: PokemonDetailsViewType.pokemonStats));
       });
     } else {
       ///TODO: Handle scenario where pokemon entity is null

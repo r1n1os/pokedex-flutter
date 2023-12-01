@@ -35,11 +35,10 @@ class PokemonTypeEntity {
 
   static Future<void> addListOfPokemonTypeToDatabase(
       List<PokemonTypeEntity> pokemonTypeEntityList, int pokemonId) async {
-    AppDatabase db = getIt.get<AppDatabase>();
     await Future.forEach(pokemonTypeEntityList, (pokemonTypeEntity) async {
       if(pokemonTypeEntity.name != 'normal') {
         int pokemonTypeId = await addPokemonTypeToDatabase(pokemonTypeEntity);
-        await PokemonWithPokemonTypeEntity. addPokemonWithPokemonTypeToDatabase(
+        await PokemonWithPokemonTypeEntity.addPokemonWithPokemonTypeToDatabase(
             pokemonId, pokemonTypeId);
       }
     });
