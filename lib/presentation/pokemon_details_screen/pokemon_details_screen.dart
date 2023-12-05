@@ -1,13 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/custom_widgets/custom_loader.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
-import 'package:pokedex/data/local_database/entities/pokemon_type_entity.dart';
 import 'package:pokedex/domain/data_model/pokemon_details_data_model.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_bloc.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_events.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_states.dart';
+import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_image_view.dart';
+import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_stats_view.dart';
+import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_types_view.dart';
 import 'package:pokedex/utils/enums/states_enums.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/images.dart';
@@ -100,90 +101,30 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
     switch (pokemonDetailsDataModel.pokemonDetailsViewType) {
       case PokemonDetailsViewType.pokemonImage:
         {
-          return _buildPokemonImageView(pokemonDetailsDataModel);
+          return PokemonImageView(
+              photoUrl: pokemonDetailsDataModel.pokemonEntity?.photoUrl);
         }
       case PokemonDetailsViewType.pokemonTypes:
         {
-          return _buildPokemonTypesView(pokemonDetailsDataModel);
+          return PokemonTypesView(
+            backgroundColor:
+                pokemonDetailsDataModel.backgroundColor ?? Colors.blueGrey,
+            pokemonTypeEntityList:
+                pokemonDetailsDataModel.pokemonEntity?.pokemonTypeEntityList,
+          );
         }
       case PokemonDetailsViewType.pokemonStats:
         {
-          return _buildPokemonStatsView(pokemonDetailsDataModel);
+          return PokemonStatsView(
+            statsEntity: pokemonDetailsDataModel.statsEntity,
+            pokemonStatsColor: pokemonDetailsDataModel.pokemonStatsColor,
+            pokemonStatsValue: pokemonDetailsDataModel.pokemonStatsValue,
+          );
         }
       default:
         {
           return Container();
         }
     }
-  }
-
-  Widget _buildPokemonImageView(
-      PokemonDetailsDataModel pokemonDetailsDataModel) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: CachedNetworkImage(
-        width: 200,
-        height: 200,
-        placeholder: (context, url) => const CircularProgressIndicator(),
-        imageUrl: pokemonDetailsDataModel.pokemonEntity?.photoUrl ?? '',
-      ),
-    );
-  }
-
-  Widget _buildPokemonTypesView(
-      PokemonDetailsDataModel pokemonDetailsDataModel) {
-    return Container(
-      padding: const EdgeInsets.only(left: 21),
-      height: 30,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: pokemonDetailsDataModel
-                  .pokemonEntity?.pokemonTypeEntityList?.length ??
-              0,
-          itemBuilder: (context, index) {
-            PokemonTypeEntity? pokemonTypeEntity = pokemonDetailsDataModel
-                .pokemonEntity?.pokemonTypeEntityList?[index];
-            return Container(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                margin: const EdgeInsets.only(left: 5),
-                decoration: BoxDecoration(
-                    color: pokemonDetailsDataModel.backgroundColor,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                    child: Text(pokemonTypeEntity?.name?.toUpperCase() ?? '')));
-          }),
-    );
-  }
-
-  Widget _buildPokemonStatsView(
-      PokemonDetailsDataModel pokemonDetailsDataModel) {
-    return Padding(
-        padding: const EdgeInsets.only(left: 21, top: 15),
-        child: Row(
-          children: [
-            SizedBox(
-                width: 100,
-                child: Text(pokemonDetailsDataModel.statsEntity?.name ?? '')),
-            Stack(
-              children: [
-                Container(
-                  width: 100,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: pokemonDetailsDataModel.pokemonStatsColor
-                          ?.withOpacity(0.2)),
-                ),
-                AnimatedContainer(
-                    duration: const Duration(milliseconds: 2000),
-                    width: pokemonDetailsDataModel.pokemonStatsValue,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: pokemonDetailsDataModel.pokemonStatsColor)),
-              ],
-            ),
-          ],
-        ));
   }
 }
