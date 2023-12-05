@@ -120,10 +120,10 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
   Widget _buildPokemonImageView(
       PokemonDetailsDataModel pokemonDetailsDataModel) {
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(20),
       child: CachedNetworkImage(
-        width: 150,
-        height: 150,
+        width: 200,
+        height: 200,
         placeholder: (context, url) => const CircularProgressIndicator(),
         imageUrl: pokemonDetailsDataModel.pokemonEntity?.photoUrl ?? '',
       ),
