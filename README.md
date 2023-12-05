@@ -1,7 +1,8 @@
 # Pokedex
 
 This is an example project to demostrate and practise on how to implement Flutter app.
-Project components consist of:
+
+### Project components:
   * Bloc State Management (With Single State)
   * Dio for Network Manager
   * GetIt for DI(Dependency Injection
