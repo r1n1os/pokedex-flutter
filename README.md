@@ -12,6 +12,7 @@ This is an example project to demostrate and practise on how to implement Flutte
 ## References:
  * EndPoint: https://pokeapi.co/
 ## How it looks: 
-<img src="https://github.com/r1n1os/pokedex/assets/32699540/40cb8d40-236c-4b93-a6e8-b2a097398354" width="200">
+<img src="https://github.com/r1n1os/pokedex/assets/32699540/1ef1fcea-fff8-4b33-8c50-b033551c650a" width="200">
 <img src="https://github.com/r1n1os/pokedex/assets/32699540/a33fe367-94a9-4815-a5f7-d57449918ae5" width="200">
-<img src="https://github.com/r1n1os/pokedex/assets/32699540/4c20ef0e-e458-4a33-93ca-45c4cd79fabf" width="200">
+<img src="https://github.com/r1n1os/pokedex/assets/32699540/b00f14fb-bcac-411c-9e69-186223af369c" width="200">
+
