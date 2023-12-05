@@ -1,1 +1,7 @@
-abstract class PokemonDetailsEvents{}
+abstract class PokemonDetailsEvents {}
+
+class ExecuteLocalQueryToGetPokemonDetailsById extends PokemonDetailsEvents {
+  final int pokemonId;
+
+  ExecuteLocalQueryToGetPokemonDetailsById({required this.pokemonId});
+}
