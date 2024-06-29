@@ -289,14 +289,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  flip_card:
-    dependency: "direct main"
-    description:
-      name: flip_card
-      sha256: "5d4aa58f3983cced0782f4ce45826b7eea36e8e464964d9209dcbc7a87b2292f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -563,6 +555,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  percentages_with_animation:
+    dependency: "direct main"
+    description:
+      name: percentages_with_animation
+      sha256: "28abbc80bce4073f2f28786cdd13a5e9306a0989fe63853e01f785d3be0e5590"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.8"
   platform:
     dependency: transitive
     description:

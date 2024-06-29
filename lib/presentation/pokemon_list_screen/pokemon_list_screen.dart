@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/custom_widgets/custom_loader.dart';
@@ -58,7 +57,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         children: [
           _buildPokemonList(providerContext, state.nextUrl,
               state.pokemonListDataModelList ?? []),
-          const CustomLoader()
+         // const CustomLoader()
         ],
       );
     }
@@ -105,21 +104,12 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   Widget _pokemonCard(PokemonListDataModel pokemonListDataModel) {
     return GestureDetector(
-      onLongPress: () {
-        setState(() {
-          pokemonListDataModel.isFrontCardViewVisible =
-          !pokemonListDataModel.isFrontCardViewVisible;
-        });
-      },
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(builder:(context) => PokemonDetailsScreen(pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,))
         );
       },
-      child: FlipCard(
-        flipOnTouch: false,
-        fill: Fill.fillFront,
-        front: Card(
+      child: Card(
           color: pokemonListDataModel.cardBackgroundColor,
           child: Column(
             children: [
@@ -131,34 +121,6 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
             ],
           ),
         ),
-        back: Card(
-          color: pokemonListDataModel.cardBackgroundColor,
-          child: Column(
-            children: [
-              Text(
-                pokemonListDataModel.pokemonEntity?.name ?? '',
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.black),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                pokemonListDataModel.pokemonEntity?.pokemonTypeEntityList
-                        ?.map((e) => e.name)
-                        .join("\n") ??
-                    '',
-                style: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                    color: Colors.black),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percentages_with_animation/percentages_with_animation.dart';
 import 'package:pokedex/data/local_database/entities/stats_entity.dart';
 
 class PokemonStatsView extends StatelessWidget {
@@ -13,27 +14,30 @@ class PokemonStatsView extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 21, top: 15),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
                 width: 100,
                 child: Text(statsEntity?.name ?? '')),
-            Stack(
-              children: [
-                Container(
-                  width: 100,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                     color: pokemonStatsColor?.withOpacity(0.2)),
+            SizedBox(
+              width: 150,
+              child: LinearPercentage(
+                currentPercentage: (statsEntity?.baseStat?.toDouble() ?? 0) / 100,
+                maxPercentage: 10,
+                backgroundHeight: 20,
+                percentageHeight: 20,
+                leftRightText: LeftRightText.leftOnly,
+                showPercentageOnPercentageView: false,
+                percentageOnPercentageViewTextStyle: const TextStyle(color: Colors.white),
+                             backgroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.black38,
                 ),
-                AnimatedContainer(
-                    duration: const Duration(milliseconds: 2000),
-                    width: pokemonStatsValue,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: pokemonStatsColor)),
-              ],
+                percentageDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: pokemonStatsColor,
+                ),
+              ),
             ),
           ],
         ));

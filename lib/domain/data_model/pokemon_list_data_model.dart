@@ -5,12 +5,10 @@ import 'package:pokedex/utils/color_utils.dart';
 class PokemonListDataModel {
   PokemonEntity? pokemonEntity;
   Color? cardBackgroundColor;
-  bool isFrontCardViewVisible;
 
   PokemonListDataModel(
       {this.pokemonEntity,
-      this.cardBackgroundColor,
-      this.isFrontCardViewVisible = true});
+      this.cardBackgroundColor});
 
   static Future<List<PokemonListDataModel>> buildPokemonListDataModelList(
       List<PokemonEntity> pokemonEntityList) async {
@@ -24,7 +22,7 @@ class PokemonListDataModel {
               ? ColorUtils().getTypeColor(
                   pokemonEntity.pokemonTypeEntityList?.first.name ?? '')
               : null,
-          isFrontCardViewVisible: true));
+        ));
     });
 
     return pokemonListDataModelList;
