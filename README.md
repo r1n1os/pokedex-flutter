@@ -7,7 +7,6 @@ This is an example project to demostrate and practise on how to implement Flutte
   * Dio for Network Manager
   * GetIt for DI(Dependency Injection
   * Drift Local Database Library
-  * DI (Dependency Injection)
 
 ## References:
  * EndPoint: https://pokeapi.co/
