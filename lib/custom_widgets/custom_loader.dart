@@ -4,39 +4,48 @@ import 'package:pokedex/utils/images.dart';
 class CustomLoader extends StatefulWidget {
   final double? loadingWidth;
   final double? loadingHeight;
+
   const CustomLoader({super.key, this.loadingHeight, this.loadingWidth});
 
   @override
   State<CustomLoader> createState() => _CustomLoaderState();
 }
 
-class _CustomLoaderState extends State<CustomLoader> {
+class _CustomLoaderState extends State<CustomLoader>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
   double rotationAngle = 0.0;
 
   @override
   void initState() {
-    _startLoading();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
+          ..repeat();
     super.initState();
   }
 
-  void _startLoading() async {
-    int i = 0;
-    while (i < 10) {
-      await Future.delayed(Duration(milliseconds: 100), () {
-        setState(() {
-          rotationAngle += 1/4;
-        });
-      });
-    }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: AnimatedRotation(
-        turns: rotationAngle,
-        duration: const Duration(seconds: 5),
-        child: Image.asset(Images.pokeballIcon, width: widget.loadingHeight ?? 100, height: widget.loadingWidth ?? 100,),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (_, child) {
+          return Transform.rotate(
+            angle: rotationAngle += 1 / 4,
+            child: child,
+          );
+        },
+        child: Image.asset(
+          Images.pokeballIcon,
+          width: widget.loadingHeight ?? 100,
+          height: widget.loadingWidth ?? 100,
+        ),
       ),
     );
   }

@@ -57,7 +57,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         children: [
           _buildPokemonList(providerContext, state.nextUrl,
               state.pokemonListDataModelList ?? []),
-         // const CustomLoader()
+          const CustomLoader()
         ],
       );
     }

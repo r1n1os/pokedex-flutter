@@ -11,6 +11,7 @@ class PokemonStatsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("${(statsEntity?.baseStat?.toDouble() ?? 0) / 100}");
     return Padding(
         padding: const EdgeInsets.only(left: 21, top: 15),
         child: Row(
@@ -18,11 +19,11 @@ class PokemonStatsView extends StatelessWidget {
           children: [
             SizedBox(
                 width: 100,
-                child: Text(statsEntity?.name ?? '')),
+                child: Text(statsEntity?.name ?? '', textAlign: TextAlign.start,)),
             SizedBox(
               width: 150,
               child: LinearPercentage(
-                currentPercentage: (statsEntity?.baseStat?.toDouble() ?? 0) / 100,
+                currentPercentage: 0.50,
                 maxPercentage: 10,
                 backgroundHeight: 20,
                 percentageHeight: 20,
