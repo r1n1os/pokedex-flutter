@@ -105,22 +105,41 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   Widget _pokemonCard(PokemonListDataModel pokemonListDataModel) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder:(context) => PokemonDetailsScreen(pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,))
-        );
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  PokemonDetailsScreen(
+                pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(-1.0, 1.0);
+                    const end = Offset.zero;
+                    const curve = Curves.ease;
+
+                    final tween = Tween(begin: begin, end: end);
+                    final curvedAnimation = CurvedAnimation(
+                      parent: animation,
+                      curve: curve,
+                    );
+                return SlideTransition(
+                    position: tween.animate(curvedAnimation),
+                    child: child);
+              },
+            ));
       },
       child: Card(
-          color: pokemonListDataModel.cardBackgroundColor,
-          child: Column(
-            children: [
-              CachedNetworkImage(
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
-              ),
-            ],
-          ),
+        color: pokemonListDataModel.cardBackgroundColor,
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
+            ),
+          ],
         ),
+      ),
     );
   }
 }
