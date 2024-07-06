@@ -9,25 +9,29 @@ class PokemonTypesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 21),
-      height: 30,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: pokemonTypeEntityList?.length ??
-              0,
-          itemBuilder: (context, index) {
-            PokemonTypeEntity? pokemonTypeEntity = pokemonTypeEntityList?[index];
-            return Container(
-                padding: const EdgeInsets.only(
-                    left: 10, right: 10, top: 5, bottom: 5),
-                margin: const EdgeInsets.only(left: 5),
-                decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                    child: Text(pokemonTypeEntity?.name?.toUpperCase() ?? '')));
-          }),
+    return Align(
+      alignment: Alignment.center,
+      child: SizedBox(
+        height: 30,
+        child: ListView.builder(
+          shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: pokemonTypeEntityList?.length ??
+                0,
+            itemBuilder: (context, index) {
+              PokemonTypeEntity? pokemonTypeEntity = pokemonTypeEntityList?[index];
+              return Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 5, bottom: 5),
+                  margin: const EdgeInsets.only(left: 5),
+                  decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(
+                      child: Text(pokemonTypeEntity?.name?.toUpperCase() ?? '')));
+            }),
+      ),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/custom_widgets/custom_loader.dart';
 import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
-import 'package:pokedex/domain/data_model/pokemon_details_data_model.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_bloc.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_events.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_states.dart';
@@ -45,11 +44,9 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
       body: BlocProvider(
-        create: (providerContext) => _pokemonDetailsBloc,
-        child: _buildView(),
-      ),
+          create: (providerContext) => _pokemonDetailsBloc,
+          child: _buildView()),
     );
   }
 
@@ -69,12 +66,11 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   Widget _buildViewBasedOnState(
       BuildContext providerContext, PokemonDetailsStates state) {
-    if (state.error != null) {
+    if (state.error != null || state.pokemonEntity == null) {
       return _buildErrorView(providerContext, state);
     }
 
-    return _buildPokemonDetailsView(
-        state.pokemonEntity, state.pokemonDetailsDataModelList ?? []);
+    return _buildPokemonDetailsView(state.pokemonEntity);
   }
 
   Widget _buildErrorView(
@@ -87,67 +83,116 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
     );
   }
 
-  Widget _buildPokemonDetailsView(PokemonEntity? pokemonEntity,
-      List<PokemonDetailsDataModel> pokemonDetailsDataModeList) {
+  Widget _buildPokemonDetailsView(PokemonEntity? pokemonEntity) {
     Color colorBasedOnPokemonType = ColorUtils()
         .getTypeColor(pokemonEntity?.pokemonTypeEntityList?.first.name ?? '');
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.only(top: 50),
       color: colorBasedOnPokemonType,
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(8)),
-            margin: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                bottom: 10,
-                top: MediaQuery.of(context).size.width / 2),
-            child: Column(
+          _buildAppBar(pokemonEntity),
+          Expanded(
+            child: Stack(
               children: [
-                const SizedBox(
-                  height: 150,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: PokemonTypesView(
-                    backgroundColor: colorBasedOnPokemonType,
-                    pokemonTypeEntityList: pokemonEntity?.pokemonTypeEntityList,
-                  ),
-                ),
-                Text(
-                  'About',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: colorBasedOnPokemonType),
-                ),
-                Text(
-                  'Base Stats',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: colorBasedOnPokemonType),
-                ),
-                if (pokemonEntity?.statsEntityList != null)
-                  PokemonStatsView(
-                    statsEntityList: pokemonEntity?.statsEntityList ?? [],
-                    pokemonStatsColor: colorBasedOnPokemonType,
-                  )
+                _buildPokemonBasicDetails(
+                    pokemonEntity, colorBasedOnPokemonType),
+                _buildPokemonImage(pokemonEntity)
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: 60, left: MediaQuery.of(context).size.width / 4),
-            child: PokemonImageView(photoUrl: pokemonEntity?.photoUrl),
-          )
         ],
       ),
+    );
+  }
+
+  Widget _buildAppBar(PokemonEntity? pokemonEntity) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 21,
+            ),
+            Text(
+              _pokemonDetailsBloc.state.pokemonEntity != null
+                  ? _pokemonDetailsBloc.state.pokemonEntity!.name
+                          ?.toUpperCase() ??
+                      ''
+                  : '',
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPokemonBasicDetails(
+      PokemonEntity? pokemonEntity, Color colorBasedOnPokemonType) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(8)),
+      margin: EdgeInsets.only(
+          left: 10,
+          right: 10,
+          bottom: 10,
+          top: MediaQuery.of(context).size.width / 2),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          PokemonTypesView(
+            backgroundColor: colorBasedOnPokemonType,
+            pokemonTypeEntityList: pokemonEntity?.pokemonTypeEntityList,
+          ),
+          /*   Text(
+                        'About',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: colorBasedOnPokemonType),
+                      ),*/
+          const SizedBox(
+            height: 50,
+          ),
+          Text(
+            'Base Stats',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: colorBasedOnPokemonType),
+          ),
+          if (pokemonEntity?.statsEntityList != null)
+            PokemonStatsView(
+              statsEntityList: pokemonEntity?.statsEntityList ?? [],
+              pokemonStatsColor: colorBasedOnPokemonType,
+            )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPokemonImage(PokemonEntity? pokemonEntity) {
+    return Padding(
+      padding:
+          EdgeInsets.only(top: 60, left: MediaQuery.of(context).size.width / 4),
+      child: PokemonImageView(photoUrl: pokemonEntity?.photoUrl),
     );
   }
 }

@@ -7,6 +7,7 @@ class PokemonListService {
   Future<PokemonListServiceResponse> executeRequestToGetAllPokemon(
       String? url) async {
     Dio dio = getIt<Dio>();
+    dio.interceptors.add(LogInterceptor(responseBody: true));
     try {
       Response response = await dio.get(url ?? Urls.getListOfAllPokemonUrl);
 
