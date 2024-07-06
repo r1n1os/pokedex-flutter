@@ -9,6 +9,7 @@ import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc
 import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_image_view.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_stats_view.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_types_view.dart';
+import 'package:pokedex/utils/color_utils.dart';
 import 'package:pokedex/utils/enums/states_enums.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/images.dart';
@@ -88,43 +89,65 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   Widget _buildPokemonDetailsView(PokemonEntity? pokemonEntity,
       List<PokemonDetailsDataModel> pokemonDetailsDataModeList) {
-    return ListView.builder(
-        itemCount: pokemonDetailsDataModeList.length,
-        itemBuilder: (context, index) {
-          return _buildViewSectionsPerViewState(
-              pokemonDetailsDataModeList[index]);
-        });
-  }
-
-  Widget _buildViewSectionsPerViewState(
-      PokemonDetailsDataModel pokemonDetailsDataModel) {
-    switch (pokemonDetailsDataModel.pokemonDetailsViewType) {
-      case PokemonDetailsViewType.pokemonImage:
-        {
-          return PokemonImageView(
-              photoUrl: pokemonDetailsDataModel.pokemonEntity?.photoUrl);
-        }
-      case PokemonDetailsViewType.pokemonTypes:
-        {
-          return PokemonTypesView(
-            backgroundColor:
-                pokemonDetailsDataModel.backgroundColor ?? Colors.blueGrey,
-            pokemonTypeEntityList:
-                pokemonDetailsDataModel.pokemonEntity?.pokemonTypeEntityList,
-          );
-        }
-      case PokemonDetailsViewType.pokemonStats:
-        {
-          return PokemonStatsView(
-            statsEntity: pokemonDetailsDataModel.statsEntity,
-            pokemonStatsColor: pokemonDetailsDataModel.pokemonStatsColor,
-            pokemonStatsValue: pokemonDetailsDataModel.pokemonStatsValue,
-          );
-        }
-      default:
-        {
-          return Container();
-        }
-    }
+    Color colorBasedOnPokemonType = ColorUtils()
+        .getTypeColor(pokemonEntity?.pokemonTypeEntityList?.first.name ?? '');
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: colorBasedOnPokemonType,
+      child: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(8)),
+            margin: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                bottom: 10,
+                top: MediaQuery.of(context).size.width / 2),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 150,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: PokemonTypesView(
+                    backgroundColor: colorBasedOnPokemonType,
+                    pokemonTypeEntityList: pokemonEntity?.pokemonTypeEntityList,
+                  ),
+                ),
+                Text(
+                  'About',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: colorBasedOnPokemonType),
+                ),
+                Text(
+                  'Base Stats',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: colorBasedOnPokemonType),
+                ),
+                if (pokemonEntity?.statsEntityList != null)
+                  PokemonStatsView(
+                    statsEntityList: pokemonEntity?.statsEntityList ?? [],
+                    pokemonStatsColor: colorBasedOnPokemonType,
+                  )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: 60, left: MediaQuery.of(context).size.width / 4),
+            child: PokemonImageView(photoUrl: pokemonEntity?.photoUrl),
+          )
+        ],
+      ),
+    );
   }
 }
