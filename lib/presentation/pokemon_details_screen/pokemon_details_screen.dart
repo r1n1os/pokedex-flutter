@@ -66,7 +66,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   Widget _buildViewBasedOnState(
       BuildContext providerContext, PokemonDetailsStates state) {
-    if (state.error != null || state.pokemonEntity == null) {
+    if (state.error != null /*|| state.pokemonEntity == null*/) {
       return _buildErrorView(providerContext, state);
     }
 
@@ -100,7 +100,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
               children: [
                 _buildPokemonBasicDetails(
                     pokemonEntity, colorBasedOnPokemonType),
-                _buildPokemonImage(pokemonEntity)
+                if (pokemonEntity != null) _buildPokemonImage(pokemonEntity)
               ],
             ),
           ),
@@ -132,7 +132,9 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
                       ''
                   : '',
               style: const TextStyle(
-                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
