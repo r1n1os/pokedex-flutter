@@ -5,7 +5,7 @@ This is an example project to demostrate and practise on how to implement Flutte
 ### Project components:
   * Bloc State Management (With Single State)
   * Dio for Network Manager
-  * GetIt for DI(Dependency Injection
+  * GetIt for DI(Dependency Injection)
   * Drift Local Database Library
 
 ## References:
