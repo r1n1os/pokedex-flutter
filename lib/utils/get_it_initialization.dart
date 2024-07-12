@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pokedex/data/local_database/appDatabase.dart';
-import 'package:pokedex/data/remote/pokemon_list_services.dart';
+import 'package:pokedex/data/remote/pokemon_services.dart';
 import 'package:pokedex/domain/repository/pokemon_details_repository.dart';
 import 'package:pokedex/domain/repository/pokemon_list_repository.dart';
 import 'package:pokedex/presentation/pokemon_details_screen/pokemon_details_bloc/pokemon_details_bloc.dart';
@@ -16,7 +16,7 @@ class GetItInitialization {
   void setupGetIt() {
     getIt.registerLazySingleton(() => Dio());
     getIt.registerLazySingleton(() => AppDatabase());
-    getIt.registerFactory<PokemonListService>(() => PokemonListService());
+    getIt.registerFactory<PokemonService>(() => PokemonService());
     getIt.registerFactory<PokemonListRepository>(() => PokemonListRepository());
     getIt.registerFactory<PokemonDetailsRepository>(() => PokemonDetailsRepository());
     getIt.registerFactory<PokemonListStates>(() => PokemonListStates(statesEnums: StatesEnums.initialization));

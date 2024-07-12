@@ -33,7 +33,7 @@ class PokemonStatsView extends StatelessWidget {
                   width: 233,
                   child: LinearPercentage(
                     currentPercentage: currentStats.baseStat?.toDouble() ?? 0,
-                    maxPercentage: 100,
+                    maxPercentage: 200,
                     backgroundHeight: 4,
                     percentageHeight: 4,
                     leftRightText: LeftRightText.leftOnly,

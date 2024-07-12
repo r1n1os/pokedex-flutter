@@ -8,14 +8,6 @@ class ExecuteRequestToGetListWithAllPokemon extends PokemonListEvents {
   ExecuteRequestToGetListWithAllPokemon({this.url});
 }
 
-class ExecuteRequestToGetDetailsOfEachPokemon extends PokemonListEvents {
-  List<PokemonEntity> pokemonEntityList;
-  String? nextUrl;
-
-  ExecuteRequestToGetDetailsOfEachPokemon(
-      {required this.pokemonEntityList, this.nextUrl});
-}
-
 class QueryAllPokemonListFromLocalDatabase extends PokemonListEvents {}
 
 class ExecuteRequestToGetNextPokemonPageIfAvailable extends PokemonListEvents {}

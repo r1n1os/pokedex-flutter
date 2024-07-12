@@ -14,9 +14,11 @@ import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/images.dart';
 
 class PokemonDetailsScreen extends StatefulWidget {
-  final int? pokemonId;
+  final int pokemonId;
+  final String extraInfoUrl;
 
-  const PokemonDetailsScreen({super.key, required this.pokemonId});
+  const PokemonDetailsScreen(
+      {super.key, required this.pokemonId, required this.extraInfoUrl});
 
   @override
   State<PokemonDetailsScreen> createState() => _PokemonDetailsScreenState();
@@ -29,8 +31,10 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   @override
   void initState() {
-    _pokemonDetailsBloc.add(ExecuteLocalQueryToGetPokemonDetailsById(
-        pokemonId: widget.pokemonId ?? -1));
+    /*_pokemonDetailsBloc.add(ExecuteLocalQueryToGetPokemonDetailsById(
+        pokemonId: widget.pokemonId));*/
+    _pokemonDetailsBloc.add(ExecuteRequestToGetPokemonDetailsFromRemoteById(
+        extraInfoUrl: widget.extraInfoUrl));
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -163,13 +167,6 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
             backgroundColor: colorBasedOnPokemonType,
             pokemonTypeEntityList: pokemonEntity?.pokemonTypeEntityList,
           ),
-          /*   Text(
-                        'About',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: colorBasedOnPokemonType),
-                      ),*/
           const SizedBox(
             height: 50,
           ),

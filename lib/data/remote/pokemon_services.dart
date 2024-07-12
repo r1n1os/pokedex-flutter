@@ -3,8 +3,8 @@ import 'package:pokedex/data/local_database/entities/pokemon_entity.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/urls.dart';
 
-class PokemonListService {
-  Future<PokemonListServiceResponse> executeRequestToGetAllPokemon(
+class PokemonService {
+  Future<PokemonServiceResponse> executeRequestToGetAllPokemon(
       String? url) async {
     Dio dio = getIt<Dio>();
     dio.interceptors.add(LogInterceptor(responseBody: true));
@@ -12,19 +12,19 @@ class PokemonListService {
       Response response = await dio.get(url ?? Urls.getListOfAllPokemonUrl);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return PokemonListServiceResponse(
+        return PokemonServiceResponse(
             pokemonEntityList: PokemonEntity.fromList(response.data['results']),
             nextUrl: response.data['next']);
       } else {
-        return PokemonListServiceResponse(
+        return PokemonServiceResponse(
             error: response.statusMessage, statusCode: response.statusCode);
       }
     } catch (ex) {
-      return PokemonListServiceResponse(dioException: ex as DioException);
+      return PokemonServiceResponse(dioException: ex as DioException);
     }
   }
 
-  Future<PokemonListServiceResponse> executeRequestToGetDetailsOfPokemon(
+  Future<PokemonServiceResponse> executeRequestToGetDetailsOfPokemon(
       String url) async {
     Dio dio = getIt<Dio>();
     DioException? dioException;
@@ -33,10 +33,10 @@ class PokemonListService {
     });
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return PokemonListServiceResponse(
+      return PokemonServiceResponse(
           pokemonEntity: PokemonEntity.fromJson(response.data));
     } else {
-      return PokemonListServiceResponse(
+      return PokemonServiceResponse(
           dioException: dioException,
           error: response.statusMessage,
           statusCode: response.statusCode);
@@ -44,7 +44,7 @@ class PokemonListService {
   }
 }
 
-class PokemonListServiceResponse {
+class PokemonServiceResponse {
   List<PokemonEntity>? pokemonEntityList;
   PokemonEntity? pokemonEntity;
   DioException? dioException;
@@ -52,7 +52,7 @@ class PokemonListServiceResponse {
   int? statusCode;
   String? nextUrl;
 
-  PokemonListServiceResponse(
+  PokemonServiceResponse(
       {this.pokemonEntityList,
       this.pokemonEntity,
       this.dioException,

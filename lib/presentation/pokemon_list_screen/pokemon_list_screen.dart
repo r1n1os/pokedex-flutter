@@ -9,6 +9,7 @@ import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokem
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_states.dart';
 import 'package:pokedex/utils/enums/states_enums.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
+import 'package:pokedex/utils/images.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
@@ -111,21 +112,22 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
               pageBuilder: (context, animation, secondaryAnimation) =>
                   PokemonDetailsScreen(
                 pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,
+                extraInfoUrl:
+                    pokemonListDataModel.pokemonEntity?.extraInfoUrl ?? '',
               ),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(-1.0, 1.0);
-                    const end = Offset.zero;
-                    const curve = Curves.ease;
+                const begin = Offset(-1.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
 
-                    final tween = Tween(begin: begin, end: end);
-                    final curvedAnimation = CurvedAnimation(
-                      parent: animation,
-                      curve: curve,
-                    );
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
                 return SlideTransition(
-                    position: tween.animate(curvedAnimation),
-                    child: child);
+                    position: tween.animate(curvedAnimation), child: child);
               },
             ));
       },
@@ -134,9 +136,22 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         child: Column(
           children: [
             CachedNetworkImage(
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
-            ),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
+                errorWidget: (context, url, error) {
+                  print("Issued url: ${url}");
+                  return Column(
+                    children: [
+                      Image.asset(Images.emptyPokeballIcon),
+                      const Text(
+                        'Oups! Pokemon Escaped!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  );
+                }),
           ],
         ),
       ),
