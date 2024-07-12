@@ -48,6 +48,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       body: BlocProvider(
           create: (providerContext) => _pokemonDetailsBloc,
           child: _buildView()),
@@ -79,11 +80,21 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
 
   Widget _buildErrorView(
       BuildContext providerContext, PokemonDetailsStates state) {
-    return Column(
-      children: [
-        Image.asset(Images.emptyPokeballIcon),
-        const Text('Sorry pokemon escaped!')
-      ],
+    return Container(
+      padding: const EdgeInsets.only(top: 50),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _buildAppBar(null),
+          SizedBox(height: 200,),
+          Image.asset(Images.emptyPokeballIcon),
+          const Text(
+            'Oups! Pokemon Escaped!',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 
@@ -130,7 +141,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
               width: 21,
             ),
             Text(
-              _pokemonDetailsBloc.state.pokemonEntity != null
+              pokemonEntity != null
                   ? _pokemonDetailsBloc.state.pokemonEntity!.name
                           ?.toUpperCase() ??
                       ''
