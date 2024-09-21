@@ -11,6 +11,10 @@ Pokedex-Flutter was developed to showcase various modern Flutter development too
   * Dependency Injection(DI): [GetIt](https://github.com/fluttercommunity/get_it)
   * Local Database: [Drift](https://drift.simonbinder.eu/)
 
+## Basic Configurations:
+  * Flutter SDK: 3.24.1
+  * Dart: 3.5.1
+
 ## Example: 
 <img src="https://github.com/user-attachments/assets/246900c8-ce96-4d05-b143-431238380dfa" width="200">
 <img src="https://github.com/user-attachments/assets/4c2d37e9-4598-48c3-9423-5bd77047b622" width="200">
