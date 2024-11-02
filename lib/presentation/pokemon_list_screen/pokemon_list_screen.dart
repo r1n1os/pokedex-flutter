@@ -8,6 +8,7 @@ import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokem
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_events.dart';
 import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_bloc/pokemon_list_states.dart';
 import 'package:pokedex/utils/enums/states_enums.dart';
+import 'package:pokedex/utils/extentions.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/images.dart';
 
@@ -106,30 +107,13 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   Widget _pokemonCard(PokemonListDataModel pokemonListDataModel) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  PokemonDetailsScreen(
-                pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,
-                extraInfoUrl:
-                    pokemonListDataModel.pokemonEntity?.extraInfoUrl ?? '',
-              ),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                const begin = Offset(-1.0, 1.0);
-                const end = Offset.zero;
-                const curve = Curves.ease;
-
-                final tween = Tween(begin: begin, end: end);
-                final curvedAnimation = CurvedAnimation(
-                  parent: animation,
-                  curve: curve,
-                );
-                return SlideTransition(
-                    position: tween.animate(curvedAnimation), child: child);
-              },
-            ));
+        context.pushNavigation(
+          screenToNavigate: PokemonDetailsScreen(
+            pokemonId: pokemonListDataModel.pokemonEntity?.id ?? -1,
+            extraInfoUrl:
+                pokemonListDataModel.pokemonEntity?.extraInfoUrl ?? '',
+          ),
+        );
       },
       child: Card(
         color: pokemonListDataModel.cardBackgroundColor,

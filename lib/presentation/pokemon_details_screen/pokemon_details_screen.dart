@@ -10,6 +10,7 @@ import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_stat
 import 'package:pokedex/presentation/pokemon_details_screen/widgets/pokemon_types_view.dart';
 import 'package:pokedex/utils/color_utils.dart';
 import 'package:pokedex/utils/enums/states_enums.dart';
+import 'package:pokedex/utils/extentions.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/images.dart';
 
@@ -127,7 +128,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen>
   Widget _buildAppBar(PokemonEntity? pokemonEntity) {
     return GestureDetector(
       onTap: () {
-        Navigator.pop(context);
+        context.popNavigation();
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 10),
