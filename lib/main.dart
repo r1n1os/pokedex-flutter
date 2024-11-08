@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/presentation/pokemon_list_screen/pokemon_list_screen.dart';
+import 'package:pokedex/presentation/welcome_screen/welcome_screen.dart';
 import 'package:pokedex/utils/get_it_initialization.dart';
 import 'package:pokedex/utils/urls.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const PokemonListScreen(),
+      home: WelcomeScreen(),
     );
   }
 }

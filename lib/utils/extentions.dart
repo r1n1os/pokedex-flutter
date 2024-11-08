@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 extension NavigationExtention on BuildContext {
   get navigator => Navigator.of(this);
@@ -32,7 +33,7 @@ extension NavigationExtention on BuildContext {
     navigator.pushAndReplace(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-        screenToNavigate,
+            screenToNavigate,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(-1.0, 1.0);
           const end = Offset.zero;
@@ -51,7 +52,7 @@ extension NavigationExtention on BuildContext {
   }
 
   pushAndRemoveUntilNavigation({required Widget screenToNavigate}) {
-    navigator.pushAndRemoveUntil({
+    navigator.pushAndRemoveUntil(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
         screenToNavigate,
@@ -69,6 +70,7 @@ extension NavigationExtention on BuildContext {
               position: tween.animate(curvedAnimation), child: child);
         },
       ),
-    });
+      (route) => false,
+    );
   }
 }

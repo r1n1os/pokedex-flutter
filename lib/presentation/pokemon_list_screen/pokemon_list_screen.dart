@@ -124,7 +124,6 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
                     const CircularProgressIndicator(),
                 imageUrl: pokemonListDataModel.pokemonEntity?.photoUrl ?? '',
                 errorWidget: (context, url, error) {
-                  print("Issued url: ${url}");
                   return Column(
                     children: [
                       Image.asset(Images.emptyPokeballIcon),
