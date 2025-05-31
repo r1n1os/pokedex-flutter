@@ -12,8 +12,8 @@ Pokedex-Flutter was developed to showcase various modern Flutter development too
   * Local Database: [Drift](https://drift.simonbinder.eu/)
 
 ## Basic Configurations:
-  * Flutter SDK: 3.24.4
-  * Dart: 3.5.4
+  * Flutter SDK: 3.32.1
+  * Dart: 3.8.1
 
 ## Example: 
 <img src="https://github.com/user-attachments/assets/246900c8-ce96-4d05-b143-431238380dfa" width="200">
