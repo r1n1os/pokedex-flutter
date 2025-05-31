@@ -25,7 +25,8 @@ if (flutterVersionName == null) {
 android {
     namespace "com.example.pokedex"
     compileSdkVersion 35
-    ndkVersion '27.2.12479018'
+    buildToolsVersion '36.0.0'
+    ndkVersion '28.1.13356709'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
